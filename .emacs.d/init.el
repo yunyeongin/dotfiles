@@ -10,6 +10,23 @@
 
 (add-to-load-path "elisp" "conf" "public_repos")
 
+(require 'package); package.elを有効化
+;; パッケージリポジトリにMarmaladeとMELPAを追加
+(add-to-list
+ 'package-archives
+ '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list
+ 'package-archives
+ '("melpa" . "https://melpa.org/packages/"))
+(add-to-list
+ 'package-archives
+ '("gnu" . "https://elpa.gnu.org/packages/"))
+(add-to-list
+ 'package-archives
+ '("org" . "https://orgmode.org/elpa/"))
+
+(package-initialize) ; インストール済みのElispを読み込む
+
 ;;　カスタムファイルを別ファイルにする
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
@@ -96,6 +113,31 @@
 ;; parenのスタイル: expressionは括弧内も強調表示
 (setq show-paren-style 'expression)
 
-;;(set-face-attribute 'show-paren-match nil
-  ;;    :background 'unspecified
-    ;;  :underline "#ff6a6a")
+(set-face-attribute 'show-paren-match nil
+      :background 'unspecified
+      :underline "#ff6a6a")
+
+(global-auto-revert-mode t)
+
+;; emacs-lisp-modeのフックをセット
+;;(add-hook 'emacs-lisp-mode-hook
+  ;;        '(lamdbda ()
+    ;;                (when (require 'eldoc nil t)
+      ;;                (setq eldoc-idle-delay 0.2)
+        ;;              (setq eldoc-echo-area-use-multiline-p t)
+          ;;            (turn-on-eldoc-mode))))
+(require 'helm-config)
+(require 'helm-descbinds)
+(helm-descbinds-mode)
+
+;; M-yにhelm-show-kill-ringを割り当てる
+(define-key global-map (kbd "M-y") 'helm-show-kill-ring)
+
+(when (require 'helm-c-moccur nil t)
+  (setq
+   helm-idle-delay 0.1
+   helm-c-moccur-helm-idle-delay 0.1
+   helm-c-moccur-higligt-info-line-flag t
+   helm-c-moccur-enable-auto-look-flag t
+   helm-c-moccur-enable-initial-pattern t)
+(global-set-key (kbd "C-M-o") 'helm-c-moccur-occur-by-moccur))
