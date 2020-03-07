@@ -126,18 +126,185 @@
       ;;                (setq eldoc-idle-delay 0.2)
         ;;              (setq eldoc-echo-area-use-multiline-p t)
           ;;            (turn-on-eldoc-mode))))
+
+
+;;helm 設定
 (require 'helm-config)
 (require 'helm-descbinds)
 (helm-descbinds-mode)
+(setq helm-buffers-fuzzy-matching t
+      helm-recentf-fuzzy-match    t)
 
 ;; M-yにhelm-show-kill-ringを割り当てる
 (define-key global-map (kbd "M-y") 'helm-show-kill-ring)
+(global-set-key (kbd "C-M-o") 'helm-occur)
+(global-set-key (kbd "C-x b") 'helm-mini)  
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 
-(when (require 'helm-c-moccur nil t)
-  (setq
-   helm-idle-delay 0.1
-   helm-c-moccur-helm-idle-delay 0.1
-   helm-c-moccur-higligt-info-line-flag t
-   helm-c-moccur-enable-auto-look-flag t
-   helm-c-moccur-enable-initial-pattern t)
-(global-set-key (kbd "C-M-o") 'helm-c-moccur-occur-by-moccur))
+;; auto-complateの設定
+(when (require 'auto-complete-config nil t)
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+  (ac-config-default)
+  (setq ac-use-menu-map t)
+  (setq ac-ignore-case nil))
+
+;; wgrepの設定
+(require 'wgrep nil t)
+
+;;undohistの設定
+(when (require 'undohist nil t)
+  (undohist-initialize))
+
+;; undo-treeの設定
+(when (require 'undo-tree nil t)
+  ;; C-'にリドゥを割り当てる
+  (define-key global-map (kbd "C-'") 'undo-tree-redo)
+  (global-undo-tree-mode))
+
+;; elscreen の設定
+(when (require 'elscreen nil t)
+  (elscreen-start))
+
+;; howmメモ保存の場所
+(setq howm-directory (concat user-emacs-directory "~/howm"))
+
+;; howm-menuの言語を日本語に
+;; (setq howm-menu-lang 'ja)
+
+;;howmメモを1日１ファイルにする
+(setq howm-file-name-format "%Y/%m/%Y-%m-%d.howm")
+
+;; howm-modeを読み込む
+(when (require 'howm-mode nil t)
+  ;; C-c でhowm-menuを起動
+  (define-key global-map (kbd "C-c ,,") 'howm-menu))
+
+;; howmメモを保存と同時に閉じる
+(defun howm-save-buffer-and-kill ()
+  "howmメモを保存と同時に閉じます。"
+  (interactive)
+  (when (and (buffer-file-name)
+             (howm-buffer-p))
+    (save-buffer)
+    (kill-buffer nil)))
+
+;;C-c C-c でメモを保存と同時にバッファを閉じる
+(define-key howm-mode-map (kbd "C-c C-c") 'howm-save-buffer-and-kill)
+
+;; cua-modeの設定
+(cua-mode t) ;cua-modeをオン
+(setq cua-enable-cua-keys nil) ;CUAキーバインドを無効にする
+
+;; web-mode設定
+(when (require 'web-mode nil t)
+  ;; 自動的にweb-modeを起動したい拡張子を追加する。
+  (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.ctp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  ;; web-modeのインデント設定用フック
+  ;; (defun web-mode-hook ()
+  ;; "Hooks for Web mode."
+  ;; (setq web-mode-markup-indent-offset 2) ;HTML's indent
+  ;; (setq web-mode-css-indent-offset 2) ;CSS's indent
+  ;; (setq web-mode-code-indent-offset 2) ; JS,PHP,Ruby,etc's indent
+  ;; (setq web-mode-comment-style 2) ; web-mode内のコメントのインデント
+  ;; (setq web-mode-style-padding 1) ;<style>内のインデント開始レベル
+  ;; (setq web-mode-script-padding 1) ;<script>内のインデント開始レベル
+  ;; )
+  ;; (add-hook 'web-mode-hook 'web-mode-hook)
+  )
+
+;; js2-modeの設定
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+;; React (JSX) を使う場合はこちら
+;; (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . js2-jsx-mode))
+
+
+;;flycheckの設定
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+(with-eval-after-load 'flycheck
+  (flycheck-pos-tip-mode))
+
+(setq gtags-suggested-key-mapping t)
+(setq gtags-auto-update t)
+
+;; helm-gtagsの設定
+(custom-set-variables
+ '(helm-gtags-suggested-key-mapping t)
+ '(helm-gtags-auto-update t))
+
+;; projectile
+(when (require 'projectile nil t)
+  (projectile-mode)
+  (add-to-list
+   'projectile-globally-ignored-directories
+   "node_modules")
+
+  (setq projectile-enable-caching t))
+
+(define-key projectile-mode-map
+  (kbd "s-p") 'projectile-command-map)
+
+;; helm-projectile
+
+(when (require 'helm-projectile nil t)
+  (setq projectile-completion-system 'helm))
+
+;; git-gutter-fringe
+(require 'git-gutter-fringe)
+(global-git-gutter-mode t)
+(global-set-key (kbd "C-x p") 'git-gutter:previous-hunk)
+(global-set-key (kbd "C-x n") 'git-gutter:next-hunk)
+
+;; multi-termの設定
+(when (require 'multi-term nil t)
+  ;; 使用するシェルを指定
+  (setq multi-term-program "/usr/local/bin/zsh"))
+
+;; 既存のソースを読み込む
+(require 'helm-elisp)
+(require 'helm-man)
+
+;; 基本となるソースを定義
+(setq helm-for-document-sources
+      '(helm-source-info-elisp
+        helm-source-info-cl
+        helm-source-info-pages
+        helm-source-man-pages))
+
+
+;; man cache
+(setq woman-cache-filename "~/.emacs.d/.wmncach.el")
+
+;; man path
+(setq woman-manpath '("/usr/share/man"
+                      "/usr/local/share/man"
+                      "/usr/local/share/man/ja"))
+
+
+;; helm-for-documentコマンドを定義
+(defun helm-for-document ()
+  "Preconfigured 'helm' for helm-for-document."
+  (interactive)
+  (let ((default (thing-at-point 'symbol)))
+    (helm :sources
+          (nconc
+           (mapcar (lambda (func)
+                     (funcall func default))
+                   helm-apropos-function-list)
+           helm-for-document-sources)
+          :buffer "*helm for document*")))
+
+;; s-dにhelm-for-documentを割り当て
+(define-key global-map (kbd "s-d") 'helm-for-document)
+
+(provide 'init)
+;;; init.el ends here

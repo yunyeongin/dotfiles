@@ -4646,6 +4646,104 @@ specifies `saved', and a negative prefix argument specifies
       (balance-windows)
       (shrink-window-if-larger-than-buffer win))))
 
+;;;; ChangeLog:
+
+;; 2020-01-28  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Undo-tree bug-fix release.
+;; 
+;; 2020-01-26  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Undo-tree point release.
+;; 
+;; 2020-01-11  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Undo-tree bug-fix release.
+;; 
+;; 2020-01-09  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Bump undo-tree version number.
+;; 
+;; 2020-01-09  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Undo-tree bug-fix release.
+;; 
+;; 2020-01-06  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	New undo-tree package release.
+;; 
+;; 2014-05-01  Barry O'Reilly  <boreilly@aer.com>
+;; 
+;; 	Fix bug that caused undo-tree to hang when undoing in region
+;; 	(bug#16377).
+;; 
+;; 2013-12-28  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	* undo-tree: Update to version 0.6.5.
+;; 
+;; 2012-12-05  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Update undo-tree to version 0.6.3
+;; 
+;; 	* undo-tree.el: Implement lazy tree drawing to significantly speed up 
+;; 	visualization of large trees + various more minor improvements.
+;; 
+;; 2012-09-25  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Updated undo-tree package to version 0.5.5.
+;; 
+;; 	Small bug-fix to avoid hooks triggering an error when trying to save
+;; 	undo history in a buffer where undo is disabled.
+;; 
+;; 2012-09-11  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Updated undo-tree package to version 0.5.4
+;; 
+;; 	Bug-fixes and improvements to persistent history storage.
+;; 
+;; 2012-07-18  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	Update undo-tree to version 0.5.3
+;; 
+;; 	* undo-tree.el: Cope gracefully with undo boundaries being deleted
+;; 	 (cf. bug#11774). Allow customization of directory to which undo history
+;; 	is
+;; 	 saved.
+;; 
+;; 2012-05-24  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	updated undo-tree package to version 0.5.2
+;; 
+;; 	* undo-tree.el: add diff view feature in undo-tree visualizer.
+;; 
+;; 2012-05-02  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	undo-tree.el: Update package to version 0.4
+;; 
+;; 2012-04-20  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	undo-tree.el: Update package to version 0.3.4
+;; 
+;; 	* undo-tree.el (undo-list-pop-changeset): fix pernicious bug causing
+;; 	undo history to be lost.
+;; 	(buffer-undo-tree): set permanent-local property.
+;; 	(undo-tree-enable-undo-in-region): add new customization option allowing 
+;; 	undo-in-region to be disabled.
+;; 
+;; 2012-01-26  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	undo-tree.el: Fixed copyright attribution and Emacs status.
+;; 
+;; 2012-01-26  Toby S. Cubitt  <tsc25@cantab.net>
+;; 
+;; 	undo-tree.el: Update package to version 0.3.3
+;; 
+;; 2011-09-17  Stefan Monnier  <monnier@iro.umontreal.ca>
+;; 
+;; 	Add undo-tree.el
+;; 
+
+
 
 
 (provide 'undo-tree)
