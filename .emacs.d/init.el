@@ -12,20 +12,26 @@
 
 (require 'package); package.elを有効化
 ;; パッケージリポジトリにMarmaladeとMELPAを追加
-(add-to-list
- 'package-archives
- '("marmalade" . "https://marmalade-repo.org/packages/"))
-(add-to-list
- 'package-archives
- '("melpa" . "https://melpa.org/packages/"))
-(add-to-list
- 'package-archives
- '("gnu" . "https://elpa.gnu.org/packages/"))
-(add-to-list
- 'package-archives
- '("org" . "https://orgmode.org/elpa/"))
+ (add-to-list
+  'package-archives
+  '("marmalade" . "https://marmalade-repo.org/packages/"))
+;; (add-to-list
+;;  'package-archives
+;;  '("melpa" . "https://melpa.org/packages/"))
+;; (add-to-list
+;;  'package-archives
+;;  '("gnu" . "https://elpa.gnu.org/packages/"))
+;; (add-to-list
+;;  'package-archives
+;;  '("org" . "https://orgmode.org/elpa/"))
+;;  
+ (package-initialize)
+ (setq package-archives
+       '(("gnu" . "http://elpa.gnu.org/packages/")
+         ("melpa" . "http://melpa.org/packages/")
+         ("org" . "http://orgmode.org/elpa/")))
 
-(package-initialize) ; インストール済みのElispを読み込む
+;; (package-initialize) ; インストール済みのElispを読み込む
 
 ;;　カスタムファイルを別ファイルにする
 (setq custom-file (locate-user-emacs-file "custom.el"))
@@ -81,10 +87,10 @@
 ;;インデントにタブ文字を使用しない
 (setq-default indent-tabs-mode nil)
 
-(set-face-background 'default "#303030")
+;;(set-face-background 'default "#303030")
 
 ;; リージョンの背景色を変更
-(set-face-background 'region "darkgreen")
+;;(set-face-background 'region "darkgreen")
 
 ;; AsciiフォントをMenloに
 (set-face-attribute 'default nil
@@ -105,7 +111,7 @@
 (global-hl-line-mode t)
 
 ;;　基本文字の色を白にする
-(set-face-foreground 'default "white")
+;;(set-face-foreground 'default "white")
 
 ;;paren-mode: 対応する格好を強調して表示する
 (setq show-paren-delay 0) ;表示までの秒数 初期値0.125
@@ -117,6 +123,7 @@
       :background 'unspecified
       :underline "#ff6a6a")
 
+(load-theme 'zenburn t)
 (global-auto-revert-mode t)
 
 ;; emacs-lisp-modeのフックをセット
